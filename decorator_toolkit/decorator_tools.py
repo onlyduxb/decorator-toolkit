@@ -8,7 +8,6 @@ from typing import TypeVar, ParamSpec, Callable
 
 P = ParamSpec("P")
 R = TypeVar("R")
-T = TypeVar("T")
 
 
 def log(msg: str | None = None) -> Callable[[Callable[P, R]], Callable[P, R]]:
@@ -43,6 +42,7 @@ def timeit(func: Callable[P, R]) -> Callable[P, R]:
 
     return wrapper
 
+
 def memoize(func: Callable[P, R]) -> Callable[P, R]:
     """Cache."""
     cache: dict[tuple[tuple[object, ...], frozenset[tuple[str, object]]], R] = {}
@@ -61,14 +61,14 @@ def memoize(func: Callable[P, R]) -> Callable[P, R]:
 
 
 def validate(
-    predicate: Callable[..., bool],
+    condition: Callable[..., bool],
 ) -> Callable[[Callable[P, R]], Callable[P, R]]:
     """Validate a condition before calling function."""
 
     def decorator(func: Callable[P, R]) -> Callable[P, R]:
         @functools.wraps(func)
         def wrapper(*args: P.args, **kwargs: P.kwargs) -> R:
-            if not predicate(*args, **kwargs):
+            if not condition(*args, **kwargs):
                 logging.error("Validation failed.")
                 raise ValueError("Validation failed")
             return func(*args, **kwargs)
