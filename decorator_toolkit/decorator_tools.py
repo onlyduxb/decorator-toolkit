@@ -21,7 +21,7 @@ def log(msg: str | None = None, success_msg: str | None = None) -> Callable[[Cal
             logging.debug(f"{func.__name__} returned {result} ({type(result)})")
             if msg is not None:
                 logging.info(msg)
-            if isinstance(result, bool) and result:
+            if isinstance(result, bool) and result and success_msg:
                 logging.info(success_msg)
             return result
 
