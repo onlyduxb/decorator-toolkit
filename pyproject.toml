@@ -1,5 +1,5 @@
 [project]
-name = "decorator_toolkit"       # underscores, matches import
+name = "decorator_toolkit"
 version = "0.1.0"
 description = "Type-safe decorators for logging, timing, retry, memoization, and validation."
 authors = [{name = "Adam Worsnip"}]

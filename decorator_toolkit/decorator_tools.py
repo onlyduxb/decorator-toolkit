@@ -10,7 +10,7 @@ P = ParamSpec("P")
 R = TypeVar("R")
 
 
-def log(msg: str | None = None, success_msg: str | None = None) -> Callable[[Callable[P, R]], Callable[P, R]]:
+def log(msg: str | None = None, success_msg: str | None = None, failed_msg: str | None = None) -> Callable[[Callable[P, R]], Callable[P, R]]:
     """Log a function with the option for a custom message."""
 
     def decorator(func: Callable[P, R]) -> Callable[P, R]:
@@ -21,8 +21,11 @@ def log(msg: str | None = None, success_msg: str | None = None) -> Callable[[Cal
             logging.debug(f"{func.__name__} returned {result} ({type(result)})")
             if msg is not None:
                 logging.info(msg)
-            if isinstance(result, bool) and result and success_msg:
-                logging.info(success_msg)
+            if isinstance(result, bool):
+                if result and success_msg:
+                    logging.info(success_msg)
+                elif not result and failed_msg:
+                    logging.info(failed_msg)
             return result
 
         return wrapper
