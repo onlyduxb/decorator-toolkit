@@ -43,18 +43,19 @@ def log(msg: str | None = None, success_msg: str | None = None, failed_msg: str 
     """
 
     def decorator(func: Callable[P, R]) -> Callable[P, R]:
+        logger = logging.getLogger(func.__module__)
         @functools.wraps(func)
         def wrapper(*args: P.args, **kwargs: P.kwargs) -> R:
-            logging.debug(f"Called {func.__name__} with args={args} & kwargs={kwargs}")
+            logger.debug(f"Called {func.__name__} with args={args} & kwargs={kwargs}")
             result = func(*args, **kwargs)
-            logging.debug(f"{func.__name__} returned {result} ({type(result)})")
+            logger.debug(f"{func.__name__} returned {result} ({type(result)})")
             if msg is not None:
-                logging.info(msg)
+                logger.info(msg)
             if isinstance(result, bool):
                 if result and success_msg:
-                    logging.info(success_msg)
+                    logger.info(success_msg)
                 elif not result and failed_msg:
-                    logging.info(failed_msg)
+                    logger.info(failed_msg)
             return result
 
         return wrapper
