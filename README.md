@@ -4,6 +4,7 @@ Type-safe Python decorators for logging, timing, memoization, and input validati
 
 ## Installation
 pip install decorator-toolkit
+(Available at: https://pypi.org/project/decorator-toolkit/#description)
 
 ## Quick example
 ```py
