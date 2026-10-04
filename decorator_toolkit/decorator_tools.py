@@ -3,14 +3,10 @@
 import functools
 import logging
 from datetime import datetime
-from typing import TypeVar, ParamSpec, Callable
+from typing import Callable
 
 
-P = ParamSpec("P")
-R = TypeVar("R")
-
-
-def log(msg: str | None = None, success_msg: str | None = None, failed_msg: str | None = None) -> Callable[[Callable[P, R]], Callable[P, R]]:
+def log[R, **P](msg: str | None = None, success_msg: str | None = None, failed_msg: str | None = None) -> Callable[[Callable[P, R]], Callable[P, R]]:
     """Log the execution of a function.
 
     The decorator logs an optional base message when the function is called.
@@ -63,7 +59,7 @@ def log(msg: str | None = None, success_msg: str | None = None, failed_msg: str 
     return decorator
 
 
-def timeit(func: Callable[P, R]) -> Callable[P, R]:
+def timeit[R, **P](func: Callable[P, R]) -> Callable[P, R]:
     """Measure execution time of a function.
 
     The decorator records how long the wrapped function takes to execute
@@ -106,7 +102,7 @@ def timeit(func: Callable[P, R]) -> Callable[P, R]:
     return wrapper
 
 
-def memoize(func: Callable[P, R]) -> Callable[P, R]:
+def memoize[R, **P](func: Callable[P, R]) -> Callable[P, R]:
     """Cache function results based on input arguments.
 
     The decorator stores results from previous calls and returns the cached
@@ -152,7 +148,7 @@ def memoize(func: Callable[P, R]) -> Callable[P, R]:
     return wrapper
 
 
-def validate(
+def validate[R, **P](
     condition: Callable[..., bool],
 ) -> Callable[[Callable[P, R]], Callable[P, R]]:
     """Enforce a validation condition before function execution.
